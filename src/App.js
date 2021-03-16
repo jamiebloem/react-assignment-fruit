@@ -7,7 +7,18 @@ import { ReactComponent as ShoppingCart } from './assets/winkelmandje.svg';
 import './App.css';
 
 function App() {
+    const [messageValue, setMessageValue] = React.useState('');
+    const [checkedTerms, toggleCheckedTerms] = React.useState(false);
+    const [submitted, setSubmitted] = React.useState(false);
+
+    function sendForm() {
+        console.log(`Het bericht: "${messageValue}" is succesvol verzonden.`);
+        setSubmitted(true);
+    }
+
+
   return (
+      <>
       <fragment>
           <nav>
           <ul>
@@ -47,7 +58,42 @@ function App() {
                     />
                 </main>
           </header>
+          <footer>
+                <div className="form-container">
+                    <h2>Contactformulier</h2>
+                    <form>
+                        <input
+                            name="message"
+                            placeholder="Typ hier jouw bericht"
+                            type="text"
+                            className={messageValue.length > 20 ? 'input-error' : ''}
+                            value={messageValue}
+                            onChange={(e) => setMessageValue(e.target.value)}
+                        />
+
+                        <label htmlFor="terms-and-conditions">
+                            <input
+                                type="checkbox"
+                                name="terms-and-conditions"
+                                id="terms-and-conditions"
+                                checked={checkedTerms}
+                                onChange={() => toggleCheckedTerms(!checkedTerms)}
+                            />
+                            Ik ga akkoord met de algemene voorwaarden
+                        </label>
+                        {messageValue.length > 20 && <p className="error-message">Dit bericht is te lang!</p>}
+                    </form>
+                    <button
+                        disabled={!checkedTerms}
+                        type="submit"
+                        onClick={sendForm}
+                        >
+                        Verstuur
+                    </button>
+                </div>
+          </footer>
       </fragment>
+      </>
   );
 }
 
